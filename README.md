@@ -18,14 +18,33 @@ Good luck!
 
 
 
-Bugs
+These are real issues in the project:
 
-1.  in aiops_pipeline.py   
-    in this line before that "anomaly-events not present 
-    producer_topic = EventTopic("anomaly-events")
+1. in aiops_pipeline.py
+
+    Issue:
+    Producer publishes to one topic
+    Consumer reads from another topic
+
+    wrong code
+    producer_topic = EventTopic("service-events")
+    ...
+    consumer_topic = EventTopic("anomaly-events")
+
+    correct code
+    topic = EventTopic("anomaly-events")
+    producer = EventProducer(topic)
+    consumer = EventConsumer(topic)
 
 2. in anomaly_detector.py
-    in this line before warning is written in place of error
+    Issue:
+    The code checks for "WARNING" instead of "ERROR"
+
+    wrong code
+    if record["log_level"] == "WARNING":
+    reasons.append("Error log detected")
+
+    correct code
+     # INTENTIONAL ASSESSMENT ISSUE
     if record["log_level"] == "ERROR":
-           
-3. 
+    reasons.append("Error log detected")
